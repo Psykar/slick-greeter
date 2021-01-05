@@ -197,10 +197,17 @@ public class SlickGreeter
         sessions.append ("ubuntu-xorg");
         sessions.append ("fynedesk");
 
+        var sessionPaths = new List<string> ();
+        sessionPaths.append("/usr/share/xsessions");
+        sessionPaths.append("/usr/share/wayland-sessions");
+        sessionPaths.append("/usr/share/lightdm/sessions");
+
         foreach (string session in sessions) {
-            var path = Path.build_filename  ("/usr/share/xsessions/", session.concat(".desktop"), null);
-            if (FileUtils.test (path, FileTest.EXISTS)) {
-                return session;
+            foreach (string sessionPath in sessionPaths) {
+                var path = Path.build_filename  (sessionPath, session.concat(".desktop"), null);
+                if (FileUtils.test (path, FileTest.EXISTS)) {
+                    return session;
+                }
             }
         }
 
